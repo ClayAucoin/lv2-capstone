@@ -1,5 +1,4 @@
-console.log("models.js says hi");
-
+// console.log("models.js says hi");
 
 function sendToModelTest(cityState) {
     userPrompt = "Can you write a short paragraph about " + cityState + "?"

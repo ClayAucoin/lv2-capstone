@@ -34,7 +34,7 @@
 
             <div class="card-body">
 
-                <input id="userInput" type="text" class="form-control rounded" value="70003">
+                <input id="userInput" type="text" class="form-control rounded" value="70001">
 
                 <!-- <div class=" card-footer d-flex justify-content-center border"> -->
                 <button id="button" class="btn bg-white text-primary mt-2 myWidth" type="button"
@@ -54,7 +54,7 @@
                 <div class="border bg-white rounded mt-4">
                     <div class="d-flex flex-column">
                         <div class="p-2 text-sm text-gray-400 border-bottom ">
-                            A little information about 
+                            A little information about
                             <span id="cityStateDisplay"></span> from ChatGPT.
                         </div>
 
@@ -67,10 +67,32 @@
             </div>
 
         </div>
+
+        <!-- html modal -->
+        <dialog id="htmlModal" class="bs-modal" aria-labelledby="bsDialogLabel" aria-describedby="bsDialogBody">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="htmlDialogLabel">Title</h1>
+                        <!-- <button type="button" class="btn-close" aria-label="Close" data-dismiss="dialog"></button> -->
+                    </div>
+                    <div class="modal-body" id="htmlDialogBody">
+                        Your content goes here.
+                    </div>
+                    <div class="modal-footer">
+                        <!-- <button class="btn btn-secondary" type="button" data-cancel>Cancel</button> -->
+                        <button id="closeHTMLModalBtn" type="button" class="btn btn-primary" data-ok>OK</button>
+                    </div>
+                </div>
+            </div>
+        </dialog>
+
+
     </div>
 
     <script src="js/variables.js"></script>
     <script src="js/secret-variables.js"></script>
+    <script src="js/modals.js"></script>
     <script src="js/models.js"></script>
     <script src="js/myHelpers.js"></script>
     <script src="js/helpers-full.js"></script>
