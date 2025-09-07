@@ -1,0 +1,20 @@
+.myContainer {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    max-width: 800px;
+}
+
+.myWidth {
+    width: 100%;
+}
+
+span {
+    font-weight: bold;
+}
+
+#aiResponse {
+  min-height: 50px;     /* always at least 50px tall */
+  max-height: 300px;    /* never grow taller than 300px */
+  overflow-y: auto;     /* scroll if content exceeds max-height */
+}
+
