@@ -28,7 +28,6 @@ function checkUserInput(userInput) {
     }
 }
 
-
 // fetchByCity("harahan")
 function fetchByCity(usersInput) {
     const requestOptions = {
