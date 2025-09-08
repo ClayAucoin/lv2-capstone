@@ -5,7 +5,7 @@ $("aiBlock").classList.add("d-none");
 
 $("button").addEventListener("click", () => {
     userInput = $("userInput").value
-    //console.log("addEventListener: " + `${JSON.stringify(userInput, null, 2)}`);
+    //console.log(`addEventListener: ${JSON.stringify(userInput, null, 2)}`);
     checkUserInput(userInput)
 });
 
@@ -18,7 +18,7 @@ $("button").addEventListener("click", () => {
  * sendToModel(variable);
  */
 function checkUserInput(userInput) {
-    //console.log("checkUserInput: " + `${JSON.stringify(userInput, null, 2)}`);
+    //console.log(`checkUserInput: ${JSON.stringify(userInput, null, 2)}`);
     const value = String(userInput ?? "").trim();
 
     if (value === "") {
@@ -26,7 +26,7 @@ function checkUserInput(userInput) {
         console.log("userInput: NULL");
         openHTMLModal();
     } else if (isNaN(value)) {
-        dialogMessage = `Entry must be a number. ${enterZip} ${tryAgain}<br>(${value})002`
+        dialogMessage = `Entry must be a number. ${enterZip} ${tryAgain}<br>(${value}) 002`
         console.log("userInput: not a number");
         openHTMLModal();
     } else if (value.length != 5) {
@@ -51,7 +51,14 @@ function updateWeatherCard() {
 
 
 function setFocusOnField() { $("userInput").focus(); }
-function resetUserInput() { $("userInput").value = ""; }
+
+function resetInterface() {
+    $("userInput").value = "";
+    $("aiResponse").textContent = "";
+    $("dataDisplay").classList.add("d-none");
+    $("aiBlock").classList.add("d-none");
+    setFocusOnField();
+}
 
 
 /**
@@ -67,5 +74,5 @@ function caughtError(errorNote) {
     dialogMessage = `An error has occured. ${tryAgain}<br>Error message:<br>
         <span class="error-message">${errorNote}</span><br>004`
     openHTMLModal();
-    // aiResponse.classList.add("error-message");
+    // $("aiResponse").classList.add("error-message");
 }

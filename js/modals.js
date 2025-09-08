@@ -9,5 +9,5 @@ function openHTMLModal() {
 
 $('closeHTMLModalBtn').addEventListener('click', () => {
     $('htmlModal').close();
-    setFocusOnField();
+    resetInterface();
 });

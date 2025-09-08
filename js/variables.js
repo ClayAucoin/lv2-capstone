@@ -11,5 +11,6 @@ let errorNote;
 let dialogTitle;
 let dialogMessage;
 
+// partial html modal text build
 let enterZip = "Enter a valid zip Code.";
 let tryAgain = "Please try again.";

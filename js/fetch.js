@@ -1,13 +1,14 @@
 // console.log("fetch.js says hi");
 
+// set to true to attach ai response
 runLive = false;
 
 function run_Production(cityState) {
     let value = cityState;
     if (runLive == true) {
-        sendToModel(value);
+        sendToModel(value);         // production
     } else {
-        sendToModelTest(value);      // test
+        sendToModelTest(value);     // test
     }
 }
 
@@ -29,6 +30,8 @@ function fetchByZip(userInput) {
     fetch("https://geocoding-api.open-meteo.com/v1/search?countryCode=US&name=" + userInput, requestOptions)
         .then((response) => response.json())
         .then(function (result) {
+            console.log("result: ");
+            console.log(result);
             const lat = result.results[0].latitude;
             const long = result.results[0].longitude;
             cityState = result.results[0].name + ", " + result.results[0].admin1
@@ -52,32 +55,6 @@ function fetchByZip(userInput) {
 
 
 /**
- * Get location information from Open-Meteo by lat, long input.
- * @param {number} lat - Latitude of location.
- * @param {number} long - Longitude of location.
- * 
- * @example
- * fetchWeather(29.9547, -90.0751);
- */
-function fetchWeather(lat, long) {
-    const requestOptions = { method: "GET", redirect: "follow" };
-
-    fetch("https://api.open-meteo.com/v1/forecast?latitude=" + lat +
-        "&longitude=" + long + "&current=apparent_temperature&wind_speed_unit" +
-        "=mph&temperature_unit=fahrenheit&precipitation_unit=inch", requestOptions)
-        .then((response) => response.json())
-        .then(function (result) {
-            console.log(result);
-            city = result;
-            // cityOutput = JSON.stringify(city, null, 2);
-            // console.log("fetchWeather: " + cityOutput);
-            updateWeatherCard();
-        })
-        .catch((error) => console.error(error));
-}
-
-
-/**
  * Get location information by city name.
  * @param {string} userInput - Value of user input.
  * 
@@ -97,13 +74,53 @@ function fetchByCity(userInput) {
             const lat = result.results[0].latitude;
             const long = result.results[0].longitude;
             cityState = result.results[0].name + ", " + result.results[0].admin1
-            console.log("city: " + `${JSON.stringify(result, null, 2)}`);
+            console.log(`city: ${JSON.stringify(result, null, 2)}`);
             console.log("lat: " + lat + "long: " + long);
             fetchWeather(lat, long);
             run_Production(cityState);
         })
         .catch((error) => {
             console.log("displaying an error in fetchByCity");
+            if (error) {
+                errorNote = error;
+                //errorNote = "fetchByCity function";
+                caughtError(errorNote);
+                return;
+            }
+            console.error(error);
+        });
+}
+
+
+/**
+ * Get location information from Open-Meteo by lat, long input.
+ * @param {number} lat - Latitude of location.
+ * @param {number} long - Longitude of location.
+ * 
+ * @example
+ * fetchWeather(29.9547, -90.0751);
+ */
+function fetchWeather(lat, long) {
+    const requestOptions = { method: "GET", redirect: "follow" };
+
+    fetch("https://api.open-meteo.com/v1/forecast?latitude=" + lat +
+        "&longitude=" + long + "&current=apparent_temperature&temperature_unit=fahrenheit", requestOptions)
+        .then((response) => response.json())
+        .then(function (result) {
+            console.log(result);
+            city = result;
+            // cityOutput = JSON.stringify(city, null, 2);
+            // console.log("fetchWeather: " + cityOutput);
+            updateWeatherCard();
+        })
+        .catch((error) => {
+            console.log("displaying an error in fetchWeather");
+            if (error) {
+                errorNote = error;
+                //errorNote = "fetchWeather function";
+                caughtError(errorNote);
+                return;
+            }
             console.error(error);
         });
 }
@@ -125,9 +142,9 @@ function sendToModelTest(cityState) {
     $("aiResponse").innerHTML = `<pre>${cityState}</pre>`;
 
     console.log("send to model TEST called");
-    console.log("sendToModelTest: " + JSON.stringify(cityOutput, null, 2));
-    console.log("City, ST: " + cityState);
-    console.log("userPrompt: " + userPrompt);
+    console.log(`sendToModelTest: ${JSON.stringify(cityOutput, null, 2)}`);
+    console.log(`City, ST: ${cityState}`);
+    console.log(`userPrompt: ${userPrompt}`);
 }
 
 
