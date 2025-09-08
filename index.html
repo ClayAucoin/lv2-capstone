@@ -19,19 +19,21 @@
     <div class="container myContainer d-flex justify-content-center">
         <div class="card mx-auto p-2 pt-4 bg-primary" style="width: 28rem;">
 
+            <!-- title -->
             <div class="align-self-center">
                 <h4 class="text-light text-nowrap">Type in a U.S zip code</h4>
             </div>
 
             <div class="card-body">
 
+                <!-- user input -->
                 <input id="userInput" type="text" class="form-control rounded" value="70001">
 
-                <!-- <div class=" card-footer d-flex justify-content-center border"> -->
+                <!-- search buttton -->
                 <button id="button" class="btn bg-white text-primary mt-2 myWidth" type="button"
                     style="width: 100%;">Search Zip Code</button>
-                <!-- </div> -->
 
+                <!-- temperature display -->
                 <div id="dataDisplay" class="mt-4">
                     <h3 id="cityStateChosen" class="card-title text-light">City, ST</h3>
                     <p class="card-text text-light">
@@ -41,11 +43,14 @@
 
                 <div id="aiBlock" class="border bg-white rounded mt-4">
                     <div class="d-flex flex-column">
+
+                        <!-- title for ai output -->
                         <div class="p-2 text-sm text-gray-400 border-bottom ">
                             A little information about
                             <span id="cityStateDisplay"></span> from ChatGPT.
                         </div>
 
+                        <!-- ai output -->
                         <div id="aiResponse" class="px-3 pt-3 pb-2 mb-2 overflow-auto">
                             Result will go here…
                         </div>
@@ -80,8 +85,6 @@
     <script src="js/modals.js"></script>
     <script src="js/script.js"></script>
     <script src="js/fetch.js"></script>
-    <!-- <script src="js/myHelpers.js"></script>
-    <script src="js/helpers-full.js"></script> -->
 
 </body>
 
