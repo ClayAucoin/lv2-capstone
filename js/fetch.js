@@ -1,6 +1,6 @@
 // console.log("fetch.js says hi");
 
-runLive = false;
+runLive = true;
 
 function run_Production(cityState) {
     let value = cityState;
