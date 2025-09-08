@@ -1,6 +1,90 @@
 // console.log("fetch.js says hi");
 
+runLive = false;
 
+function run_Production(cityState) {
+    let value = cityState;
+    if (runLive == true) {
+        sendToModel(value);
+    } else {
+        sendToModelTest(value);      // test
+    }
+}
+
+
+/**
+ * Get location by zip code.
+ * @param {number} userInput - Value of user input.
+ * 
+ * @example
+ * variable = 70003
+ * fetchByZip(variable);
+ */
+function fetchByZip(userInput) {
+    const requestOptions = {
+        method: "GET",
+        redirect: "follow"
+    };
+
+    fetch("https://geocoding-api.open-meteo.com/v1/search?countryCode=US&name=" + userInput, requestOptions)
+        .then((response) => response.json())
+        .then(function (result) {
+            const lat = result.results[0].latitude;
+            const long = result.results[0].longitude;
+            cityState = result.results[0].name + ", " + result.results[0].admin1
+            console.log("lat: " + lat + "long: " + long);
+            fetchWeather(lat, long);
+            run_Production(cityState);
+            // sendToModel(cityState);
+            // sendToModelTest(cityState);      // test
+        })
+        .catch((error) => {
+            console.log("displaying and error in fetchByZip");
+            if (error) {
+                errorNote = error;
+                //errorNote = "fetchByZip function";
+                caughtError(errorNote);
+                return;
+            }
+            console.error(error);
+        });
+}
+
+
+/**
+ * Get location information from Open-Meteo by lat, long input.
+ * @param {number} lat - Latitude of location.
+ * @param {number} long - Longitude of location.
+ * 
+ * @example
+ * fetchWeather(29.9547, -90.0751);
+ */
+function fetchWeather(lat, long) {
+    const requestOptions = { method: "GET", redirect: "follow" };
+
+    fetch("https://api.open-meteo.com/v1/forecast?latitude=" + lat +
+        "&longitude=" + long + "&current=apparent_temperature&wind_speed_unit" +
+        "=mph&temperature_unit=fahrenheit&precipitation_unit=inch", requestOptions)
+        .then((response) => response.json())
+        .then(function (result) {
+            console.log(result);
+            city = result;
+            // cityOutput = JSON.stringify(city, null, 2);
+            // console.log("fetchWeather: " + cityOutput);
+            updateWeatherCard();
+        })
+        .catch((error) => console.error(error));
+}
+
+
+/**
+ * Get location information by city name.
+ * @param {string} userInput - Value of user input.
+ * 
+ * @example
+ * variable = "New Orleans"
+ * fetchByCity(variable);
+ */
 function fetchByCity(userInput) {
     const requestOptions = {
         method: "GET",
@@ -16,8 +100,7 @@ function fetchByCity(userInput) {
             console.log("city: " + `${JSON.stringify(result, null, 2)}`);
             console.log("lat: " + lat + "long: " + long);
             fetchWeather(lat, long);
-            // sendToModel(cityState);
-            // sendToModelTest(cityState);      // test
+            run_Production(cityState);
         })
         .catch((error) => {
             console.log("displaying an error in fetchByCity");
@@ -26,57 +109,41 @@ function fetchByCity(userInput) {
 }
 
 
-function fetchByZip(userInput) {
-    const requestOptions = {
-        method: "GET",
-        redirect: "follow"
-    };
-
-    fetch("https://geocoding-api.open-meteo.com/v1/search?countryCode=US&name=" + userInput, requestOptions)
-        .then((response) => response.json())
-        .then(function (result) {
-            const lat = result.results[0].latitude;
-            const long = result.results[0].longitude;
-            cityState = result.results[0].name + ", " + result.results[0].admin1
-            console.log("lat: " + lat + "long: " + long);
-            fetchWeather(lat, long);
-            // sendToModel(cityState);
-            sendToModelTest(cityState);      // test
-        })
-        .catch((error) => {
-            console.log("displaying and error in fetchByZip");
-            console.error(error);
-            if (error) {
-                errorNote = error;
-                //errorNote = "fetchByZip function";
-                caughtError(errorNote);
-                return;
-            }
-        });
-}
-
-
+/**
+ * Test function to receive variable passing.
+ * @param {string} cityState - Value of user input.
+ * 
+ * @example
+ * variable = "New Orleans, LA"
+ * sendToModelTest(variable);
+ */
 function sendToModelTest(cityState) {
+    console.log("sendToTest: cityState -> " + cityState)
     userPrompt = "Can you write a short paragraph about " + cityState + "?"
 
     $("aiBlock").classList.remove("d-none");
+    $("aiResponse").innerHTML = `<pre>${cityState}</pre>`;
 
     console.log("send to model TEST called");
+    console.log("sendToModelTest: " + JSON.stringify(cityOutput, null, 2));
     console.log("City, ST: " + cityState);
     console.log("userPrompt: " + userPrompt);
 }
 
 
-// send ai request
+/**
+ * Get AI response.
+ * @param {string} cityState - Value of user input.
+ * 
+ * @example
+ * variable = "New Orleans, LA"
+ * sendToModel(variable);
+ */
 function sendToModel(cityState) {
     console.log("send to model called");
-    console.log("userPrompt: " + userPrompt);
 
     userPrompt = "Can you write a short paragraph about " + cityState + "?"
-
-    // aiResponse.textContent.style.cssText = "font-style: normal;";
-    // userQuestion.innerHTML = "You asked: <b>" + userInput + "</b>";
-    // resetButton.classList.remove("d-none");
+    console.log("userPrompt: " + userPrompt);
 
     async function query(data) {
         const response = await fetch(
@@ -105,6 +172,7 @@ function sendToModel(cityState) {
     }).then((response) => {
         botReply = response.choices[0].message.content;
         console.log(botReply);
+        $("aiBlock").classList.remove("d-none");
         $("aiResponse").textContent = botReply;
     });
 }
