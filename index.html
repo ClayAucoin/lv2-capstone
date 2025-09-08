@@ -2,15 +2,6 @@
 <html lang="en">
 
 <head>
-    <script>
-        (function () {
-            const isLocal = ['localhost', '127.0.0.1', '::1'].includes(location.hostname);
-            const baseHref = isLocal ? '/' : '/my-weather/';
-            const base = document.createElement('base');
-            base.setAttribute('href', baseHref);
-            document.head.prepend(base); // insert as the first element in <head>
-        })();
-    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -38,20 +29,19 @@
 
                 <!-- <div class=" card-footer d-flex justify-content-center border"> -->
                 <button id="button" class="btn bg-white text-primary mt-2 myWidth" type="button"
-                    style="width: 100%;">Display
-                    Weather</button>
+                    style="width: 100%;">Search Zip Code</button>
                 <!-- </div> -->
 
                 <div id="dataDisplay" class="mt-4">
                     <h3 id="cityStateChosen" class="card-title text-light">City, ST</h3>
                     <p class="card-text text-light">
-                        Latitude: <span id="latitude"></span><br>
-                        Longitude: <span id="longitude"></span><br>
+                        <!-- Latitude: <span id="latitude"></span><br>
+                        Longitude: <span id="longitude"></span><br> -->
                         Temperature: <span id="temp"></span><span>°F</span>
                     </p>
                 </div>
 
-                <div class="border bg-white rounded mt-4">
+                <div id="aiBlock" class="border bg-white rounded mt-4">
                     <div class="d-flex flex-column">
                         <div class="p-2 text-sm text-gray-400 border-bottom ">
                             A little information about
@@ -63,9 +53,7 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
 
         <!-- html modal -->
@@ -86,18 +74,16 @@
                 </div>
             </div>
         </dialog>
-
-
+         
     </div>
 
     <script src="js/variables.js"></script>
     <script src="js/secret-variables.js"></script>
     <script src="js/modals.js"></script>
-    <script src="js/models.js"></script>
+    <script src="js/fetch.js"></script>
     <script src="js/myHelpers.js"></script>
     <script src="js/helpers-full.js"></script>
     <script src="js/script.js"></script>
-    <!-- <script src="js/script-orig.js"></script> -->
 
 </body>
 

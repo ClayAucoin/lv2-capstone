@@ -1,87 +1,33 @@
 
 $("dataDisplay").classList.add("d-none");
+$("aiBlock").classList.add("d-none");
 
 
 $("button").addEventListener("click", () => {
-
-    usersInput = $("userInput").value
-    checkUserInput(usersInput)
+    userInput = $("userInput").value
+    console.log("addEventListener: " + `${JSON.stringify(userInput, null, 2)}`);
+    checkUserInput(userInput)
 });
 
 function checkUserInput(userInput) {
+    console.log("checkUserInput: " + `${JSON.stringify(userInput, null, 2)}`);
     const value = String(userInput ?? "").trim();
     console.log(value);
     if (value === "") {
         dialogTitle = "Error";
-        dialogMessage = "Submission cannot be blank. Enter a valid zip Code. Please try again.<br>001"
+        dialogMessage = "Entry cannot be blank. Enter a valid zip Code. Please try again.<br>001"
         openHTMLModal();
     } else if (isNaN(value)) {
         dialogTitle = "Error";
-        dialogMessage = `Submission must be a number. Enter a valid zip Code. Please try again.<br>(${value})002`
+        dialogMessage = `Entry must be a number. Enter a valid zip Code. Please try again.<br>(${value})002`
         openHTMLModal();
     } else if (value.length != 5) {
         dialogTitle = "Error";
-        dialogMessage = `Submission must be 5 numbers. Enter a valid zip Code. Please try again.<br>(${value.length}) 003`
+        dialogMessage = `Entry must be 5 numbers. Enter a valid zip Code. Please try again.<br>(${value.length}) 003`
         openHTMLModal();
     } else {
-        fetchByZip(usersInput);
+        fetchByZip(userInput);
     }
-}
-
-// fetchByCity("harahan")
-function fetchByCity(usersInput) {
-    const requestOptions = {
-        method: "GET",
-        redirect: "follow"
-    };
-
-    fetch("https://geocoding-api.open-meteo.com/v1/search?countryCode=US&name=" + usersInput, requestOptions)
-        .then((response) => response.json())
-        .then(function (result) {
-            const lat = result.results[0].latitude;
-            const long = result.results[0].longitude;
-            cityState = result.results[0].name + ", " + result.results[0].admin1
-            console.log("city: " + `${JSON.stringify(result, null, 2)}`);
-            console.log("lat: " + lat + "long: " + long);
-            fetchWeather(lat, long);
-            // sendToModel(cityState);
-            // sendToModelTest(cityState);      // test
-        })
-        .catch((error) => {
-            console.log("displaying an error in fetchByCity");
-            console.error(error);
-        });
-}
-
-
-
-function fetchByZip(usersInput) {
-    const requestOptions = {
-        method: "GET",
-        redirect: "follow"
-    };
-
-    fetch("https://geocoding-api.open-meteo.com/v1/search?countryCode=US&name=" + usersInput, requestOptions)
-        .then((response) => response.json())
-        .then(function (result) {
-            const lat = result.results[0].latitude;
-            const long = result.results[0].longitude;
-            cityState = result.results[0].name + ", " + result.results[0].admin1
-            console.log("lat: " + lat + "long: " + long);
-            fetchWeather(lat, long);
-            // sendToModel(cityState);
-            sendToModelTest(cityState);      // test
-        })
-        .catch((error) => {
-            console.log("displaying and error in fetchByZip");
-            console.error(error);
-            if (error) {
-                errorNote = error;
-                //errorNote = "fetchByZip function";
-                caughtError(errorNote);
-                return;
-            }
-        });
 }
 
 function caughtError(errorNote) {
@@ -124,8 +70,8 @@ function updateWeatherCard() {
     $("cityStateDisplay").textContent = cityState
 
     $("cityStateChosen").textContent = cityState;
-    $("latitude").textContent = city.latitude;
-    $("longitude").textContent = city.longitude;
+    // $("latitude").textContent = city.latitude;
+    // $("longitude").textContent = city.longitude;
     $("temp").textContent = city.current.apparent_temperature;
 
     console.log("cityState", cityState);
