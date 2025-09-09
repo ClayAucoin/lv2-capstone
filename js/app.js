@@ -11,6 +11,7 @@ function clickHandler() {
     checkUserInput(userInput)
 };
 
+
 /**
  * Validate user input.
  * @param {number} userInput - Value of user input.

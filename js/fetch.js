@@ -55,14 +55,12 @@ function fetchByZip(userInput) {
         });
 }
 
-
 /**
  * Get location information by city name.
  * @param {string} userInput - Value of user input.
  * 
- * @example
- * variable = "New Orleans"
- * fetchByCity(variable);
+ * @returns
+ * void
  */
 function fetchByCity(userInput) {
     const requestOptions = {
