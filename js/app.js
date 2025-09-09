@@ -3,19 +3,21 @@ $("dataDisplay").classList.add("d-none");
 $("aiBlock").classList.add("d-none");
 
 
-$("button").addEventListener("click", () => {
+$("sendButton").addEventListener("click", clickHandler);
+
+function clickHandler() {
     userInput = $("userInput").value
     //console.log(`addEventListener: ${JSON.stringify(userInput, null, 2)}`);
     checkUserInput(userInput)
-});
+};
 
 /**
- * Get AI response.
- * @param {string} cityState - Value of user input.
+ * Validate user input.
+ * @param {number} userInput - Value of user input.
  * 
  * @example
- * variable = "New Orleans, LA"
- * sendToModel(variable);
+ * variable = 70003
+ * checkUserInput(variable);
  */
 function checkUserInput(userInput) {
     //console.log(`checkUserInput: ${JSON.stringify(userInput, null, 2)}`);

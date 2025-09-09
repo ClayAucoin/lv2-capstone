@@ -1,3 +1,5 @@
+// "use strict"
+
 // console.log("fetch.js says hi");
 
 // set to true to attach ai response

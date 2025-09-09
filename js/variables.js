@@ -1,9 +1,11 @@
+// console.log("variables.js says hi");
+
 const $ = (id) => document.getElementById(id);
 
 let runLive;
 let usersInput;
-let userPrompt;
-let cityState;
+let userPrompt = "";
+let cityState = "";
 let city;
 let cityOutput;
 
