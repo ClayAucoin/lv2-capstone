@@ -3,7 +3,7 @@
 // console.log("fetch.js says hi");
 
 // set to true to attach ai response
-runLive = false;
+runLive = true;
 
 function run_Production(cityState) {
     let value = cityState;
@@ -182,7 +182,7 @@ function sendToModel(cityState) {
         messages: [
             {
                 role: "user",
-                content: userPrompt,
+                content: userPrompt +" answer as if you are a pirate.",
             },
         ],
         model: "openai/gpt-oss-120b:fireworks-ai",

@@ -14,6 +14,7 @@ The UI is a Bootstrap card with a simple error modal powered by the native `<dia
 > - Add a screenshot showing the AI blurb displayed.
 
 
+<!-- 
 ![Main card](images/image1.png) 
 
 ![Main card](images/image3.png)
@@ -21,7 +22,8 @@ The UI is a Bootstrap card with a simple error modal powered by the native `<dia
 ![Main card](images/image5.png)
 
 ![Main card](images/image6.png)
-
+ -->
+ 
 ---
 
 ## Table of contents
