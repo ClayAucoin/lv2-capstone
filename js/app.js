@@ -2,7 +2,6 @@
 $("dataDisplay").classList.add("d-none");
 $("aiBlock").classList.add("d-none");
 
-
 $("sendButton").addEventListener("click", clickHandler);
 
 function clickHandler() {
@@ -26,15 +25,15 @@ function checkUserInput(userInput) {
 
     if (value === "") {
         dialogMessage = `Entry cannot be blank. ${enterZip} ${tryAgain}<br>001`
-        console.log("userInput: NULL");
+        console.log("userInput: NULL: 001");
         openHTMLModal();
     } else if (isNaN(value)) {
         dialogMessage = `Entry must be a number. ${enterZip} ${tryAgain}<br>(${value}) 002`
-        console.log("userInput: not a number");
+        console.log("userInput: not a number: 002");
         openHTMLModal();
     } else if (value.length != 5) {
         dialogMessage = `Entry must be 5 numbers. ${enterZip} ${tryAgain}<br>(${value.length}) 003`
-        console.log("userInput: not 5 digits");
+        console.log("userInput: not 5 digits: 003");
         openHTMLModal();
     } else {
         fetchByZip(userInput);
@@ -76,6 +75,7 @@ function caughtError(errorNote) {
     dialogTitle = "Error";
     dialogMessage = `An error has occured. ${tryAgain}<br>Error message:<br>
         <span class="error-message">${errorNote}</span><br>004`
+    console.log(`${tryAgain}`);
+    console.log(`${errorNote}: 004`);
     openHTMLModal();
-    // $("aiResponse").classList.add("error-message");
 }

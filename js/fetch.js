@@ -3,7 +3,7 @@
 // console.log("fetch.js says hi");
 
 // set to true to attach ai response
-runLive = true;
+runLive = false;
 
 function run_Production(cityState) {
     let value = cityState;
@@ -14,6 +14,18 @@ function run_Production(cityState) {
     }
 }
 
+function displayResult(result) {
+
+    console.log("result: %o", result);
+
+    // Best for debugging objects
+    console.log(result);               // expandable
+    console.log({ result });           // labels it "result" in the console
+    console.dir(result);               // prints as a JS object
+
+    // String form (pretty JSON)
+    console.log(JSON.stringify(result, null, 2));
+}
 
 /**
  * Get location by zip code.
@@ -29,25 +41,22 @@ function fetchByZip(userInput) {
         redirect: "follow"
     };
 
-    fetch("https://geocoding-api.open-meteo.com/v1/search?countryCode=US&name=" + userInput, requestOptions)
+    fetch(`https://geocoding-api.open-meteo.com/v1/search?countryCode=US&name=${userInput}`, requestOptions)
         .then((response) => response.json())
         .then(function (result) {
-            console.log("result: ");
-            console.log(result);
+            displayResult(result);
+            console.log("result: %o", result);
             const lat = result.results[0].latitude;
             const long = result.results[0].longitude;
-            cityState = result.results[0].name + ", " + result.results[0].admin1
-            console.log("lat: " + lat + "long: " + long);
+            cityState = `${result.results[0].name} , ${result.results[0].admin1}`
+            console.log(`lat: ${lat} long: ${long}`);
             fetchWeather(lat, long);
             run_Production(cityState);
-            // sendToModel(cityState);
-            // sendToModelTest(cityState);      // test
         })
         .catch((error) => {
             console.log("displaying and error in fetchByZip");
             if (error) {
                 errorNote = error;
-                //errorNote = "fetchByZip function";
                 caughtError(errorNote);
                 return;
             }
@@ -68,9 +77,10 @@ function fetchByCity(userInput) {
         redirect: "follow"
     };
 
-    fetch("https://geocoding-api.open-meteo.com/v1/search?countryCode=US&name=" + userInput, requestOptions)
+    fetch(`https://geocoding-api.open-meteo.com/v1/search?countryCode=US&name=${userInput}`, requestOptions)
         .then((response) => response.json())
         .then(function (result) {
+            console.log("result: %o", result);
             const lat = result.results[0].latitude;
             const long = result.results[0].longitude;
             cityState = result.results[0].name + ", " + result.results[0].admin1
@@ -103,14 +113,11 @@ function fetchByCity(userInput) {
 function fetchWeather(lat, long) {
     const requestOptions = { method: "GET", redirect: "follow" };
 
-    fetch("https://api.open-meteo.com/v1/forecast?latitude=" + lat +
-        "&longitude=" + long + "&current=apparent_temperature&temperature_unit=fahrenheit", requestOptions)
+    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&current=apparent_temperature&temperature_unit=fahrenheit`, requestOptions)
         .then((response) => response.json())
         .then(function (result) {
-            console.log(result);
+            console.log("result: %o", result);
             city = result;
-            // cityOutput = JSON.stringify(city, null, 2);
-            // console.log("fetchWeather: " + cityOutput);
             updateWeatherCard();
         })
         .catch((error) => {
@@ -135,8 +142,8 @@ function fetchWeather(lat, long) {
  * sendToModelTest(variable);
  */
 function sendToModelTest(cityState) {
-    console.log("sendToTest: cityState -> " + cityState)
-    userPrompt = "Can you write a short paragraph about " + cityState + "?"
+    console.log(`sendToTest: cityState -> ${cityState}`)
+    userPrompt = `Can you write a short paragraph about ${cityState}?`
 
     $("aiBlock").classList.remove("d-none");
     $("aiResponse").innerHTML = `<pre>${cityState}</pre>`;
@@ -159,7 +166,7 @@ function sendToModelTest(cityState) {
 function sendToModel(cityState) {
     console.log("send to model called");
 
-    userPrompt = "Can you write a short paragraph about " + cityState + "?"
+    userPrompt = `Can you write a short paragraph about ${cityState}?`
     console.log("userPrompt: " + userPrompt);
 
     async function query(data) {
@@ -182,7 +189,7 @@ function sendToModel(cityState) {
         messages: [
             {
                 role: "user",
-                content: userPrompt +" answer as if you are a pirate.",
+                content: userPrompt,
             },
         ],
         model: "openai/gpt-oss-120b:fireworks-ai",
