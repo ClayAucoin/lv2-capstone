@@ -3,7 +3,7 @@
 // console.log("fetch.js says hi");
 
 // set to true to attach ai response
-runLive = false;
+runLive = true;
 
 function run_Production(cityState) {
 	let value = cityState;
@@ -66,73 +66,35 @@ function displayResult(fname, result) {
  * variable = 70003
  * fetchByZip(variable);
  */
-function fetchByZip(userInput) {
-	const requestOptions = {
-		method: "GET",
-		redirect: "follow"
-	};
+// function fetchByZip(userInput) {
+function fetchByZip(zip) {
+	const requestOptions = { method: "GET", redirect: "follow" };
 
-	fetch(`https://geocoding-api.open-meteo.com/v1/search?countryCode=US&name=${userInput}`, requestOptions)
+	fetch(`https://geocoding-api.open-meteo.com/v1/search?countryCode=US&name=${zip}`, requestOptions)
 		.then((response) => response.json())
 		.then(function (result) {
-			const fname = "fetchByZip";
-			displayResult(fname, result);
-			const lat = result.results[0].latitude;
-			const long = result.results[0].longitude;
-			cityState = `${result.results[0].name} , ${result.results[0].admin1}`
+
+			displayResult("fetchByZip", result);
+
+			const first = result.results[0];
+			const lat = first.latitude;
+			const long = first.longitude;
+			const cityState = `${first.name} , ${first.admin1}`;
+
 			console.log(`lat: ${lat} long: ${long}`);
-			fetchWeather(lat, long);
+
+			fetchWeather(lat, long, cityState);
 			run_Production(cityState);
 		})
 		.catch((error) => {
 			console.log("displaying and error in fetchByZip");
 			if (error) {
-				errorNote = error;
-				caughtError(errorNote);
+				errorBuild(error);
 				return;
 			}
 			console.error(error);
 		});
 }
-
-/**
- * Get location information by city name.
- * @param {string} userInput - Value of user input.
- * 
- * @returns
- * void
- */
-function fetchByCity(userInput) {
-	const requestOptions = {
-		method: "GET",
-		redirect: "follow"
-	};
-
-	fetch(`https://geocoding-api.open-meteo.com/v1/search?countryCode=US&name=${userInput}`, requestOptions)
-		.then((response) => response.json())
-		.then(function (result) {
-			fname = "fetchByCity";
-			displayResult(fname, result);
-			const lat = result.results[0].latitude;
-			const long = result.results[0].longitude;
-			cityState = result.results[0].name + ", " + result.results[0].admin1
-			console.log(`city: ${JSON.stringify(result, null, 2)}`);
-			console.log("lat: " + lat + "long: " + long);
-			fetchWeather(lat, long);
-			run_Production(cityState);
-		})
-		.catch((error) => {
-			console.log("displaying an error in fetchByCity");
-			if (error) {
-				errorNote = error;
-				//errorNote = "fetchByCity function";
-				caughtError(errorNote);
-				return;
-			}
-			console.error(error);
-		});
-}
-
 
 /**
  * Get location information from Open-Meteo by lat, long input.
@@ -142,7 +104,7 @@ function fetchByCity(userInput) {
  * @example
  * fetchWeather(29.9547, -90.0751);
  */
-function fetchWeather(lat, long) {
+function fetchWeather(lat, long, cityState) {
 	const requestOptions = { method: "GET", redirect: "follow" };
 
 	fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&current=apparent_temperature&temperature_unit=fahrenheit`, requestOptions)
@@ -150,8 +112,8 @@ function fetchWeather(lat, long) {
 		.then(function (result) {
 			fname = "fetchWeather";
 			displayResult(fname, result);
-			city = result;
-			updateWeatherCard();
+			// city = result;
+			updateWeatherCard(result, cityState);
 		})
 		.catch((error) => {
 			console.log("displaying an error in fetchWeather");
@@ -187,7 +149,6 @@ function sendToModelTest(cityState) {
 	$("aiResponse").innerHTML = `<pre>${cityState}</pre>`;
 
 	console.log("send to model TEST called");
-	console.log(`sendToModelTest: ${JSON.stringify(cityOutput, null, 2)}`);
 	console.log(`City, ST: ${cityState}`);
 	console.log(`userPrompt: ${userPrompt}`);
 }
@@ -242,4 +203,47 @@ function sendToModel(cityState) {
 		$("aiResponse").textContent = botReply;
 	});
 }
+
+
+
+// OPTIONAL ADD
+/**
+ * Get location information by city name.
+ * @param {string} userInput - Value of user input.
+ * 
+ * @returns
+ * void
+ */
+function fetchByCity(userInput) {
+	const requestOptions = {
+		method: "GET",
+		redirect: "follow"
+	};
+
+	fetch(`https://geocoding-api.open-meteo.com/v1/search?countryCode=US&name=${userInput}`, requestOptions)
+		.then((response) => response.json())
+		.then(function (result) {
+			fname = "fetchByCity";
+			displayResult(fname, result);
+			const lat = result.results[0].latitude;
+			const long = result.results[0].longitude;
+			cityState = result.results[0].name + ", " + result.results[0].admin1
+			console.log(`city: ${JSON.stringify(result, null, 2)}`);
+			console.log("lat: " + lat + "long: " + long);
+			fetchWeather(lat, long);
+			run_Production(cityState);
+		})
+		.catch((error) => {
+			console.log("displaying fetchByCity error");
+			if (error) {
+				errorNote = error;
+				//errorNote = "fetchByCity function";
+				errorBuild(error);
+				//caughtError(errorNote);
+				return;
+			}
+			console.error(error);
+		});
+}
+
 

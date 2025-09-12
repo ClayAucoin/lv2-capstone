@@ -11,6 +11,24 @@ function clickHandler() {
 };
 
 
+// --- controller: decides whether to show modal or continue ---
+async function checkUserInput(userInput) {
+    const value = validateZip(userInput);
+    if (!value.ok) return showModal(value.title, value.html);
+    await fetchByZip(value.zip);
+}
+
+function validateZip(userInput) {
+    const value = String(userInput ?? "").trim();
+
+    if (!value) { return { ok: false, title: "Validation", html: `Entry cannot be blank. ${enterZip} ${tryAgain}<br><code>001</code>` } }
+    if (isNaN(value)) { return { ok: false, title: "Validation", html: `Entry must be a number. ${enterZip} ${tryAgain}<br>(${value}) <code>002</code>` } }
+    if (value.length !== 5) { return { ok: false, title: "Validation", html: `Entry must be 5 numbers. ${enterZip} ${tryAgain}<br>(${value.length}) <code>003</code>` } }
+    return { ok: true, zip: value };
+}
+
+
+
 /**
  * Validate user input.
  * @param {number} userInput - Value of user input.
@@ -19,7 +37,7 @@ function clickHandler() {
  * variable = 70003
  * checkUserInput(variable);
  */
-function checkUserInput(userInput) {
+function OLD_checkUserInput(userInput) {
     //console.log(`checkUserInput: ${JSON.stringify(userInput, null, 2)}`);
     const value = String(userInput ?? "").trim();
 
@@ -42,14 +60,16 @@ function checkUserInput(userInput) {
 }
 
 
-function updateWeatherCard() {
+
+
+function updateWeatherCard(result, cityState) {
     $("dataDisplay").classList.remove("d-none");
 
     $("cityStateChosen").textContent = cityState
     $("cityStateDisplay").textContent = cityState
 
     $("cityStateChosen").textContent = cityState;
-    $("temp").textContent = `${city.current.apparent_temperature}${city.current_units.apparent_temperature}`;
+    $("temp").textContent = `${result.current.apparent_temperature}${result.current_units.apparent_temperature}`;
 }
 
 
@@ -64,6 +84,16 @@ function resetInterface() {
 }
 
 
+function errorBuild(error) {
+    showModal(
+        "Error",
+        `An error has occurred. ${tryAgain}<br>Error message:<br>
+       <span class="error-message">${String(error)}</span><br><code>005</code>`
+    );
+}
+
+
+
 /**
  * Send error to modal from function.
  * @param {string} errorNote - Error passed from function.
@@ -72,7 +102,7 @@ function resetInterface() {
  * variable = "TypeError: can't access property 0, result.results is undefined"
  * caughtError(variable);
  */
-function caughtError(errorNote) {
+function OLD_caughtError(errorNote) {
     let dialogTitle = "Error";
     let dialogMessage = `An error has occured. ${tryAgain}<br>Error message:<br>
         <span class="error-message">${errorNote}</span><br><code>004</code>`

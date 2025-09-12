@@ -3,10 +3,9 @@
 const $ = (id) => document.getElementById(id);
 
 let runLive;
-let usersInput;
 let userPrompt = "";
-let cityState = "";
-let city;
+// let cityState = "";
+// let city;
 let cityOutput;
 // let fname;
 
