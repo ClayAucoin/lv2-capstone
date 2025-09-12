@@ -17,7 +17,8 @@
 <body>
 
     <main class="myContainer container d-flex justify-content-center my-4">
-        <article class="card bg-primary text-light p-2" style="max-width: 28rem;">
+        <article class="card bg-primary text-light p-2 w-100" style="max-width: 28rem;">
+
             <header class="text-center mt-2">
                 <h1 class="h4 text-nowrap">Type in a U.S. ZIP code</h1>
             </header>
@@ -26,9 +27,18 @@
                 <!-- Search form -->
                 <!-- <form id="zipForm" class="mb-3" novalidate> -->
                     <label for="userInput" class="form-label visually-hidden">ZIP code</label>
-                    <input id="userInput" name="zip" type="text" class="form-control" value="70001" inputmode="numeric"
-                        pattern="\\d{5}" maxlength="5" autocomplete="postal-code" aria-describedby="zipHelp"
-                        placeholder="Enter 5-digit ZIP" required>
+                    <input 
+                        id="userInput" 
+                        name="zip" 
+                        type="text" 
+                        class="form-control" 
+                        inputmode="numeric"
+                        pattern="[0-9]{5}" 
+                        maxlength="5" 
+                        autocomplete="postal-code" 
+                        aria-describedby="zipHelp"
+                        placeholder="Enter 5-digit ZIP" 
+                        required>
                     <div id="zipHelp" class="form-text text-white-50">
                         Enter a 5-digit U.S. ZIP (e.g., 70001).
                     </div>

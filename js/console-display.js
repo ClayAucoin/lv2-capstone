@@ -44,7 +44,7 @@ function consoleDisplay(fname, result) {
 		}
 
 		if (typeof parsed === "object" && parsed !== null) {
-			// console.log(`02: result from ${fname} (pretty JSON):\n${JSON.stringify(parsed, null, 2)}`);
+			console.log(`02: result from ${fname} (pretty JSON):\n${JSON.stringify(parsed, null, 2)}`);
 		} else {
 			console.log(`02: result from ${fname} (value):`, parsed);
 		}

@@ -9,3 +9,4 @@ $('closeHTMLModalBtn').addEventListener('click', () => {
     $('htmlModal').close();
     resetInterface();
 });
+

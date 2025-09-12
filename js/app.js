@@ -2,11 +2,23 @@
 $("dataDisplay").classList.add("d-none");
 $("aiBlock").classList.add("d-none");
 
-$("sendButton").addEventListener("click", clickHandler);
+$("sendButton").addEventListener("click", () => {
+    const zip = $("userInput").value.trim();
+    checkUserInput(zip);
+});
+
+
+
+// $("zipForm").addEventListener("submit", (e) => {
+//   e.preventDefault();
+//   const zip = $("userInput").value.trim();
+//   clickHandler();
+// });
+
+
 
 function clickHandler() {
-    // userInput = $("userInput").value
-    //console.log(`addEventListener: ${JSON.stringify(userInput, null, 2)}`);
+    console.log(`addEventListener: ${$("userInput").value}`);
     checkUserInput($("userInput").value)
 };
 
