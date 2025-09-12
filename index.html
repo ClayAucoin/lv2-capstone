@@ -16,69 +16,65 @@
 
 <body>
 
-    <div class="container myContainer d-flex justify-content-center">
-        <div class="card mx-auto p-2 pt-4 bg-primary" style="width: 28rem;">
-
-            <!-- title -->
-            <div class="align-self-center">
-                <h4 class="text-light text-nowrap">Type in a U.S zip code</h4>
-            </div>
+    <main class="myContainer container d-flex justify-content-center my-4">
+        <article class="card bg-primary text-light p-2" style="max-width: 28rem;">
+            <header class="text-center mt-2">
+                <h1 class="h4 text-nowrap">Type in a U.S. ZIP code</h1>
+            </header>
 
             <div class="card-body">
-
-                <!-- user input -->
-                <input id="userInput" type="text" class="form-control rounded" value="70001">
-
-                <!-- search buttton -->
-                <button id="sendButton" class="btn bg-white text-primary mt-2 myWidth" type="button"
-                    style="width: 100%;">Search Zip Code</button>
-
-                <!-- temperature display -->
-                <div id="dataDisplay" class="mt-4">
-                    <h3 id="cityStateChosen" class="card-title text-light">City, ST</h3>
-                    <p class="card-text text-light">
-                        Right now it's <span id="temp"></span>
-                    </p>
-                </div>
-
-                <div id="aiBlock" class="border bg-white rounded mt-4">
-                    <div class="d-flex flex-column">
-
-                        <!-- title for ai output -->
-                        <div class="p-2 text-sm text-gray-400 border-bottom ">
-                            A little information about
-                            <span id="cityStateDisplay"></span> from ChatGPT.
-                        </div>
-
-                        <!-- ai output -->
-                        <div id="aiResponse" class="px-3 pt-3 pb-2 mb-2 overflow-auto">
-                            Result will go here…
-                        </div>
+                <!-- Search form -->
+                <!-- <form id="zipForm" class="mb-3" novalidate> -->
+                    <label for="userInput" class="form-label visually-hidden">ZIP code</label>
+                    <input id="userInput" name="zip" type="text" class="form-control" value="70001" inputmode="numeric"
+                        pattern="\\d{5}" maxlength="5" autocomplete="postal-code" aria-describedby="zipHelp"
+                        placeholder="Enter 5-digit ZIP" required>
+                    <div id="zipHelp" class="form-text text-white-50">
+                        Enter a 5-digit U.S. ZIP (e.g., 70001).
                     </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- html modal -->
-        <dialog id="htmlModal" class="bs-modal" aria-labelledby="bsDialogLabel" aria-describedby="bsDialogBody">
+                    <button id="sendButton" class="btn bg-white text-primary mt-2 w-100" type="submit">
+                        Search ZIP Code
+                    </button>
+                <!-- </form> -->
+
+                <!-- Weather summary -->
+                <section id="dataDisplay" aria-live="polite" class="mt-3">
+                    <h2 id="cityStateChosen" class="h5 card-title text-light">City, ST</h2>
+                    <p class="card-text mb-0">
+                        Right now it's <output id="temp" aria-live="polite"></output>
+                    </p>
+                </section>
+
+                <!-- AI info block -->
+                <section id="aiBlock" class="border bg-white rounded mt-4 text-body">
+                    <header class="border-bottom p-2 small text-muted">
+                        A little information about <span id="cityStateDisplay"></span> from ChatGPT.
+                    </header>
+                    <div id="aiResponse" class="px-3 pt-3 pb-2 mb-2 overflow-auto" style="max-height: 14rem;">
+                        Result will go here…
+                    </div>
+                </section>
+            </div>
+        </article>
+
+        <!-- Modal (native <dialog>, styled like Bootstrap) -->
+        <dialog id="htmlModal" class="bs-modal" aria-labelledby="htmlDialogLabel" aria-describedby="htmlDialogBody">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="htmlDialogLabel">Title</h1>
-                        <!-- <button type="button" class="btn-close" aria-label="Close" data-dismiss="dialog"></button> -->
-                    </div>
-                    <div class="modal-body" id="htmlDialogBody">
-                        Your content goes here.
-                    </div>
-                    <div class="modal-footer">
-                        <!-- <button class="btn btn-secondary" type="button" data-cancel>Cancel</button> -->
+                    <header class="modal-header">
+                        <h2 class="modal-title fs-5" id="htmlDialogLabel">Title</h2>
+                        <!-- If you want a close button, wire it to dialog.close() -->
+                        <!-- <button type="button" class="btn-close" aria-label="Close"></button> -->
+                    </header>
+                    <div class="modal-body" id="htmlDialogBody">Your content goes here.</div>
+                    <footer class="modal-footer">
                         <button id="closeHTMLModalBtn" type="button" class="btn btn-primary" data-ok>OK</button>
-                    </div>
+                    </footer>
                 </div>
             </div>
         </dialog>
-         
-    </div>
+    </main>
 
     <script src="js/variables.js"></script>
     <script src="js/secret-variables.js"></script>
