@@ -26,22 +26,29 @@ function run_Production(cityState) {
  *
  * @example
  * With an object:
- * displayResult("fetchByZip", { city: "New York", state: "NY" });
+ * consoleDisplay("fetchByZip", { city: "New York", state: "NY" });
  *
  * @example
  * With a JSON string:
- * displayResult("fetchByZip", '{"city":"New York","state":"NY"}');
+ * consoleDisplay("fetchByZip", '{"city":"New York","state":"NY"}');
  */
-function displayResult(fname, result) {
+function OLD_consoleDisplay(fname, result) {
 	const resultDisplay = true;
 	const stringifyDisplay = true;
 
-	if (resultDisplay) { console.log("01: result from %s: %o", fname, result); }
+	console.log(result);
+
+	if (resultDisplay) {
+		console.log("01: result from %s: %o", fname, result);
+	}
+
 	try {
 		if (stringifyDisplay) {
 			let parsed = result;
-			if (typeof result === "string") { parsed = JSON.parse(result) }
-			if (typeof parsed === "object" && parsed !== null) { 
+			if (typeof result === "string") {
+				parsed = JSON.parse(result)
+			}
+			if (typeof parsed === "object" && parsed !== null) {
 				// console.log(`02: result from ${fname}:\n${JSON.stringify(parsed, null, 2)}`) 
 			}
 		}
@@ -65,7 +72,7 @@ function fetchByZip(zip) {
 		.then((response) => response.json())
 		.then(function (result) {
 
-			displayResult("fetchByZip", result);
+			consoleDisplay("fetchByZip", result);
 
 			const first = result.results[0];
 			const lat = first.latitude;
@@ -102,7 +109,7 @@ function fetchWeather(lat, long, cityState) {
 		.then((response) => response.json())
 		.then(function (result) {
 			fname = "fetchWeather";
-			displayResult(fname, result);
+			consoleDisplay(fname, result);
 			// city = result;
 			updateWeatherCard(result, cityState);
 		})
@@ -130,7 +137,7 @@ function sendToModelTest(cityState) {
 	console.log(`sendToTest: cityState -> ${cityState}`)
 
 	fname = "sendToModelTest";
-	displayResult(fname, cityState);
+	consoleDisplay(fname, cityState);
 
 
 	userPrompt = `Can you write a short paragraph about ${cityState}?`
@@ -185,7 +192,7 @@ function sendToModel(cityState) {
 	}).then((response) => {
 		botReply = response.choices[0].message.content;
 
-		displayResult("sendToModel", botReply);
+		consoleDisplay("sendToModel", botReply);
 
 		$("aiBlock").classList.remove("d-none");
 		$("aiResponse").textContent = botReply;
@@ -209,9 +216,9 @@ function fetchByCity(userInput) {
 		.then((response) => response.json())
 		.then(function (result) {
 
-			displayResult("fetchByCity", result);
+			consoleDisplay("fetchByCity", result);
 
-			const first = result.results[0]; 
+			const first = result.results[0];
 			const lat = first.latitude;
 			const long = first.longitude;
 			const cityState = `${first.name} , ${first.admin1}`;
