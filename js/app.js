@@ -5,9 +5,9 @@ $("aiBlock").classList.add("d-none");
 $("sendButton").addEventListener("click", clickHandler);
 
 function clickHandler() {
-    userInput = $("userInput").value
+    // userInput = $("userInput").value
     //console.log(`addEventListener: ${JSON.stringify(userInput, null, 2)}`);
-    checkUserInput(userInput)
+    checkUserInput($("userInput").value)
 };
 
 
@@ -23,20 +23,21 @@ function checkUserInput(userInput) {
     //console.log(`checkUserInput: ${JSON.stringify(userInput, null, 2)}`);
     const value = String(userInput ?? "").trim();
 
+    let dialogTitle = "Error";
     if (value === "") {
-        dialogMessage = `Entry cannot be blank. ${enterZip} ${tryAgain}<br>001`
+        let dialogMessage = `Entry cannot be blank. ${enterZip} ${tryAgain}<br><code>001</code>`
         console.log("userInput: NULL: 001");
-        openHTMLModal();
+        openHTMLModal(dialogTitle, dialogMessage);
     } else if (isNaN(value)) {
-        dialogMessage = `Entry must be a number. ${enterZip} ${tryAgain}<br>(${value}) 002`
+        let dialogMessage = `Entry must be a number. ${enterZip} ${tryAgain}<br>(${value}) <code>002</code>`
         console.log("userInput: not a number: 002");
-        openHTMLModal();
+        openHTMLModal(dialogTitle, dialogMessage);
     } else if (value.length != 5) {
-        dialogMessage = `Entry must be 5 numbers. ${enterZip} ${tryAgain}<br>(${value.length}) 003`
+        let dialogMessage = `Entry must be 5 numbers. ${enterZip} ${tryAgain}<br>(${value.length}) <code>003</code>`
         console.log("userInput: not 5 digits: 003");
-        openHTMLModal();
+        openHTMLModal(dialogTitle, dialogMessage);
     } else {
-        fetchByZip(userInput);
+        fetchByZip(value);
     }
 }
 
@@ -48,7 +49,7 @@ function updateWeatherCard() {
     $("cityStateDisplay").textContent = cityState
 
     $("cityStateChosen").textContent = cityState;
-    $("temp").textContent = city.current.apparent_temperature;
+    $("temp").textContent = `${city.current.apparent_temperature}${city.current_units.apparent_temperature}`;
 }
 
 
@@ -72,10 +73,9 @@ function resetInterface() {
  * caughtError(variable);
  */
 function caughtError(errorNote) {
-    dialogTitle = "Error";
-    dialogMessage = `An error has occured. ${tryAgain}<br>Error message:<br>
-        <span class="error-message">${errorNote}</span><br>004`
-    console.log(`${tryAgain}`);
+    let dialogTitle = "Error";
+    let dialogMessage = `An error has occured. ${tryAgain}<br>Error message:<br>
+        <span class="error-message">${errorNote}</span><br><code>004</code>`
     console.log(`${errorNote}: 004`);
-    openHTMLModal();
+    openHTMLModal(dialogTitle, dialogMessage);
 }

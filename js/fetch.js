@@ -6,26 +6,57 @@
 runLive = false;
 
 function run_Production(cityState) {
-    let value = cityState;
-    if (runLive == true) {
-        sendToModel(value);         // production
-    } else {
-        sendToModelTest(value);     // test
-    }
+	let value = cityState;
+	if (runLive == true) {
+		sendToModel(value);         // production
+	} else {
+		sendToModelTest(value);     // test
+	}
 }
 
-function displayResult(result) {
 
-    console.log("result: %o", result);
+/**
+ * Display results in the console in two formats:
+ *   1. Raw object (expandable in DevTools)
+ *   2. Pretty-printed JSON (stringified)
+ *
+ * @param {string} fname - Label (usually the function name).
+ * @param {object|string} result - The fetch result. Can be a parsed object
+ *                                 or a raw JSON string.
+ *
+ * @example
+ * With an object:
+ * displayResult("fetchByZip", { city: "New York", state: "NY" });
+ *
+ * @example
+ * With a JSON string:
+ * displayResult("fetchByZip", '{"city":"New York","state":"NY"}');
+ */
+function displayResult(fname, result) {
+	const resultDisplay = true;
+	const stringifyDisplay = true;
 
-    // Best for debugging objects
-    console.log(result);               // expandable
-    console.log({ result });           // labels it "result" in the console
-    console.dir(result);               // prints as a JS object
+	if (resultDisplay) {
+		console.log("01: result from %s: %o", fname, result);
+	}
 
-    // String form (pretty JSON)
-    console.log(JSON.stringify(result, null, 2));
+	try {
+		if (stringifyDisplay) {
+			let parsed = result;
+
+			if (typeof result === "string") {
+				parsed = JSON.parse(result);
+			}
+
+			if (typeof parsed === "object" && parsed !== null) {
+				console.log(`02: result from ${fname}:\n${JSON.stringify(parsed, null, 2)}`);
+			}
+		}
+	} catch (e) {
+		console.log("02: not valid JSON/object", e.message);
+	}
 }
+
 
 /**
  * Get location by zip code.
@@ -36,32 +67,32 @@ function displayResult(result) {
  * fetchByZip(variable);
  */
 function fetchByZip(userInput) {
-    const requestOptions = {
-        method: "GET",
-        redirect: "follow"
-    };
+	const requestOptions = {
+		method: "GET",
+		redirect: "follow"
+	};
 
-    fetch(`https://geocoding-api.open-meteo.com/v1/search?countryCode=US&name=${userInput}`, requestOptions)
-        .then((response) => response.json())
-        .then(function (result) {
-            displayResult(result);
-            console.log("result: %o", result);
-            const lat = result.results[0].latitude;
-            const long = result.results[0].longitude;
-            cityState = `${result.results[0].name} , ${result.results[0].admin1}`
-            console.log(`lat: ${lat} long: ${long}`);
-            fetchWeather(lat, long);
-            run_Production(cityState);
-        })
-        .catch((error) => {
-            console.log("displaying and error in fetchByZip");
-            if (error) {
-                errorNote = error;
-                caughtError(errorNote);
-                return;
-            }
-            console.error(error);
-        });
+	fetch(`https://geocoding-api.open-meteo.com/v1/search?countryCode=US&name=${userInput}`, requestOptions)
+		.then((response) => response.json())
+		.then(function (result) {
+			const fname = "fetchByZip";
+			displayResult(fname, result);
+			const lat = result.results[0].latitude;
+			const long = result.results[0].longitude;
+			cityState = `${result.results[0].name} , ${result.results[0].admin1}`
+			console.log(`lat: ${lat} long: ${long}`);
+			fetchWeather(lat, long);
+			run_Production(cityState);
+		})
+		.catch((error) => {
+			console.log("displaying and error in fetchByZip");
+			if (error) {
+				errorNote = error;
+				caughtError(errorNote);
+				return;
+			}
+			console.error(error);
+		});
 }
 
 /**
@@ -72,33 +103,34 @@ function fetchByZip(userInput) {
  * void
  */
 function fetchByCity(userInput) {
-    const requestOptions = {
-        method: "GET",
-        redirect: "follow"
-    };
+	const requestOptions = {
+		method: "GET",
+		redirect: "follow"
+	};
 
-    fetch(`https://geocoding-api.open-meteo.com/v1/search?countryCode=US&name=${userInput}`, requestOptions)
-        .then((response) => response.json())
-        .then(function (result) {
-            console.log("result: %o", result);
-            const lat = result.results[0].latitude;
-            const long = result.results[0].longitude;
-            cityState = result.results[0].name + ", " + result.results[0].admin1
-            console.log(`city: ${JSON.stringify(result, null, 2)}`);
-            console.log("lat: " + lat + "long: " + long);
-            fetchWeather(lat, long);
-            run_Production(cityState);
-        })
-        .catch((error) => {
-            console.log("displaying an error in fetchByCity");
-            if (error) {
-                errorNote = error;
-                //errorNote = "fetchByCity function";
-                caughtError(errorNote);
-                return;
-            }
-            console.error(error);
-        });
+	fetch(`https://geocoding-api.open-meteo.com/v1/search?countryCode=US&name=${userInput}`, requestOptions)
+		.then((response) => response.json())
+		.then(function (result) {
+			fname = "fetchByCity";
+			displayResult(fname, result);
+			const lat = result.results[0].latitude;
+			const long = result.results[0].longitude;
+			cityState = result.results[0].name + ", " + result.results[0].admin1
+			console.log(`city: ${JSON.stringify(result, null, 2)}`);
+			console.log("lat: " + lat + "long: " + long);
+			fetchWeather(lat, long);
+			run_Production(cityState);
+		})
+		.catch((error) => {
+			console.log("displaying an error in fetchByCity");
+			if (error) {
+				errorNote = error;
+				//errorNote = "fetchByCity function";
+				caughtError(errorNote);
+				return;
+			}
+			console.error(error);
+		});
 }
 
 
@@ -111,25 +143,26 @@ function fetchByCity(userInput) {
  * fetchWeather(29.9547, -90.0751);
  */
 function fetchWeather(lat, long) {
-    const requestOptions = { method: "GET", redirect: "follow" };
+	const requestOptions = { method: "GET", redirect: "follow" };
 
-    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&current=apparent_temperature&temperature_unit=fahrenheit`, requestOptions)
-        .then((response) => response.json())
-        .then(function (result) {
-            console.log("result: %o", result);
-            city = result;
-            updateWeatherCard();
-        })
-        .catch((error) => {
-            console.log("displaying an error in fetchWeather");
-            if (error) {
-                errorNote = error;
-                //errorNote = "fetchWeather function";
-                caughtError(errorNote);
-                return;
-            }
-            console.error(error);
-        });
+	fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&current=apparent_temperature&temperature_unit=fahrenheit`, requestOptions)
+		.then((response) => response.json())
+		.then(function (result) {
+			fname = "fetchWeather";
+			displayResult(fname, result);
+			city = result;
+			updateWeatherCard();
+		})
+		.catch((error) => {
+			console.log("displaying an error in fetchWeather");
+			if (error) {
+				errorNote = error;
+				//errorNote = "fetchWeather function";
+				caughtError(errorNote);
+				return;
+			}
+			console.error(error);
+		});
 }
 
 
@@ -142,16 +175,21 @@ function fetchWeather(lat, long) {
  * sendToModelTest(variable);
  */
 function sendToModelTest(cityState) {
-    console.log(`sendToTest: cityState -> ${cityState}`)
-    userPrompt = `Can you write a short paragraph about ${cityState}?`
+	console.log(`sendToTest: cityState -> ${cityState}`)
 
-    $("aiBlock").classList.remove("d-none");
-    $("aiResponse").innerHTML = `<pre>${cityState}</pre>`;
+	fname = "sendToModelTest";
+	displayResult(fname, cityState);
 
-    console.log("send to model TEST called");
-    console.log(`sendToModelTest: ${JSON.stringify(cityOutput, null, 2)}`);
-    console.log(`City, ST: ${cityState}`);
-    console.log(`userPrompt: ${userPrompt}`);
+
+	userPrompt = `Can you write a short paragraph about ${cityState}?`
+
+	$("aiBlock").classList.remove("d-none");
+	$("aiResponse").innerHTML = `<pre>${cityState}</pre>`;
+
+	console.log("send to model TEST called");
+	console.log(`sendToModelTest: ${JSON.stringify(cityOutput, null, 2)}`);
+	console.log(`City, ST: ${cityState}`);
+	console.log(`userPrompt: ${userPrompt}`);
 }
 
 
@@ -164,40 +202,44 @@ function sendToModelTest(cityState) {
  * sendToModel(variable);
  */
 function sendToModel(cityState) {
-    console.log("send to model called");
+	console.log("send to model called");
 
-    userPrompt = `Can you write a short paragraph about ${cityState}?`
-    console.log("userPrompt: " + userPrompt);
+	userPrompt = `Can you write a short paragraph about ${cityState}?`
+	console.log("userPrompt: " + userPrompt);
 
-    async function query(data) {
-        const response = await fetch(
-            "https://router.huggingface.co/v1/chat/completions",
-            {
-                headers: {
-                    Authorization: `Bearer ${HF_TOKEN}`,
-                    "Content-Type": "application/json",
-                },
-                method: "POST",
-                body: JSON.stringify(data),
-            }
-        );
-        const result = await response.json();
-        return result;
-    }
+	async function query(data) {
+		const response = await fetch(
+			"https://router.huggingface.co/v1/chat/completions",
+			{
+				headers: {
+					Authorization: `Bearer ${HF_TOKEN}`,
+					"Content-Type": "application/json",
+				},
+				method: "POST",
+				body: JSON.stringify(data),
+			}
+		);
+		const result = await response.json();
+		return result;
+	}
 
-    query({
-        messages: [
-            {
-                role: "user",
-                content: userPrompt,
-            },
-        ],
-        model: "openai/gpt-oss-120b:fireworks-ai",
-    }).then((response) => {
-        botReply = response.choices[0].message.content;
-        console.log(botReply);
-        $("aiBlock").classList.remove("d-none");
-        $("aiResponse").textContent = botReply;
-    });
+	query({
+		messages: [
+			{
+				role: "user",
+				content: userPrompt,
+			},
+		],
+		model: "openai/gpt-oss-120b:fireworks-ai",
+	}).then((response) => {
+		botReply = response.choices[0].message.content;
+
+		fname = "sendToModel";
+		displayResult(fname, botReply);
+
+		// console.log(botReply);
+		$("aiBlock").classList.remove("d-none");
+		$("aiResponse").textContent = botReply;
+	});
 }
 

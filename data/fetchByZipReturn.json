@@ -1,0 +1,36 @@
+{
+  "results": [
+    {
+      "id": 4333177,
+      "name": "Metairie",
+      "latitude": 29.98409,
+      "longitude": -90.15285,
+      "elevation": 1,
+      "feature_code": "PPL",
+      "country_code": "US",
+      "admin1_id": 4331987,
+      "admin2_id": 4328978,
+      "timezone": "America/Chicago",
+      "population": 138481,
+      "postcodes": [
+        "70001",
+        "70002",
+        "70003",
+        "70004",
+        "70005",
+        "70006",
+        "70009",
+        "70010",
+        "70011",
+        "70033",
+        "70055",
+        "70060"
+      ],
+      "country_id": 6252001,
+      "country": "United States",
+      "admin1": "Louisiana",
+      "admin2": "Jefferson"
+    }
+  ],
+  "generationtime_ms": 0.25331974
+}

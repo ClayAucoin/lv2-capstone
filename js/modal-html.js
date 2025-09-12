@@ -1,6 +1,6 @@
-dialogTitle = "Error";
 
-function openHTMLModal() {
+
+function openHTMLModal(dialogTitle, dialogMessage) {
     $("htmlDialogLabel").textContent = dialogTitle;
     $("htmlDialogBody").innerHTML = dialogMessage;
 
