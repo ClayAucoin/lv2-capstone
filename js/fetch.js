@@ -3,7 +3,7 @@
 // console.log("fetch.js says hi");
 
 // set to true to attach ai response
-runLive = true;
+const runLive = false;
 
 function run_Production(cityState) {
 	let value = cityState;
@@ -36,25 +36,16 @@ function displayResult(fname, result) {
 	const resultDisplay = true;
 	const stringifyDisplay = true;
 
-	if (resultDisplay) {
-		console.log("01: result from %s: %o", fname, result);
-	}
-
+	if (resultDisplay) { console.log("01: result from %s: %o", fname, result); }
 	try {
 		if (stringifyDisplay) {
 			let parsed = result;
-
-			if (typeof result === "string") {
-				parsed = JSON.parse(result);
-			}
-
-			if (typeof parsed === "object" && parsed !== null) {
-				console.log(`02: result from ${fname}:\n${JSON.stringify(parsed, null, 2)}`);
+			if (typeof result === "string") { parsed = JSON.parse(result) }
+			if (typeof parsed === "object" && parsed !== null) { 
+				// console.log(`02: result from ${fname}:\n${JSON.stringify(parsed, null, 2)}`) 
 			}
 		}
-	} catch (e) {
-		console.log("02: not valid JSON/object", e.message);
-	}
+	} catch (e) { console.log("02: not valid JSON/object", e.message); }
 }
 
 
@@ -116,10 +107,9 @@ function fetchWeather(lat, long, cityState) {
 			updateWeatherCard(result, cityState);
 		})
 		.catch((error) => {
-			console.log("displaying an error in fetchWeather");
+			console.log("displaying fetchWeather error");
 			if (error) {
 				errorNote = error;
-				//errorNote = "fetchWeather function";
 				caughtError(errorNote);
 				return;
 			}
@@ -163,9 +153,9 @@ function sendToModelTest(cityState) {
  * sendToModel(variable);
  */
 function sendToModel(cityState) {
-	console.log("send to model called");
+	console.log("sendToModel called");
 
-	userPrompt = `Can you write a short paragraph about ${cityState}?`
+	const userPrompt = `Can you write a short paragraph about ${cityState}?`
 	console.log("userPrompt: " + userPrompt);
 
 	async function query(data) {
@@ -195,10 +185,8 @@ function sendToModel(cityState) {
 	}).then((response) => {
 		botReply = response.choices[0].message.content;
 
-		fname = "sendToModel";
-		displayResult(fname, botReply);
+		displayResult("sendToModel", botReply);
 
-		// console.log(botReply);
 		$("aiBlock").classList.remove("d-none");
 		$("aiResponse").textContent = botReply;
 	});
@@ -215,31 +203,28 @@ function sendToModel(cityState) {
  * void
  */
 function fetchByCity(userInput) {
-	const requestOptions = {
-		method: "GET",
-		redirect: "follow"
-	};
+	const requestOptions = { method: "GET", redirect: "follow" };
 
 	fetch(`https://geocoding-api.open-meteo.com/v1/search?countryCode=US&name=${userInput}`, requestOptions)
 		.then((response) => response.json())
 		.then(function (result) {
-			fname = "fetchByCity";
-			displayResult(fname, result);
-			const lat = result.results[0].latitude;
-			const long = result.results[0].longitude;
-			cityState = result.results[0].name + ", " + result.results[0].admin1
-			console.log(`city: ${JSON.stringify(result, null, 2)}`);
-			console.log("lat: " + lat + "long: " + long);
-			fetchWeather(lat, long);
+
+			displayResult("fetchByCity", result);
+
+			const first = result.results[0]; 
+			const lat = first.latitude;
+			const long = first.longitude;
+			const cityState = `${first.name} , ${first.admin1}`;
+
+			console.log(`lat: ${lat} long: ${long}`);
+
+			fetchWeather(lat, long, cityState);
 			run_Production(cityState);
 		})
 		.catch((error) => {
 			console.log("displaying fetchByCity error");
 			if (error) {
-				errorNote = error;
-				//errorNote = "fetchByCity function";
 				errorBuild(error);
-				//caughtError(errorNote);
 				return;
 			}
 			console.error(error);

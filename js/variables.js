@@ -2,13 +2,6 @@
 
 const $ = (id) => document.getElementById(id);
 
-let runLive;
-let userPrompt = "";
-// let cityState = "";
-// let city;
-let cityOutput;
-// let fname;
-
 
 // partial html modal text build
 let enterZip = "Enter a valid zip Code.";
