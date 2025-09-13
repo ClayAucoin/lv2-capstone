@@ -3,7 +3,7 @@
 // console.log("fetch.js says hi");
 
 // set to true to attach ai response
-const runLive = false;
+const runLive = true;
 
 function run_Production(cityState) {
 	let value = cityState;
@@ -31,12 +31,12 @@ function fetchByZip(zip) {
 		.then((response) => response.json())
 		.then(function (result) {
 
-			consoleDisplay("fetchByZip", result, false);
+			consoleDisplay("fetchByZip", result, true);
 
 			const first = result.results[0];
 			const lat = first.latitude;
 			const long = first.longitude;
-			const cityState = `${first.name} , ${first.admin1}`;
+			const cityState = `${first.name}, ${first.admin1}`;
 
 			console.log(`lat: ${lat} long: ${long}`);
 
@@ -64,25 +64,17 @@ function fetchByZip(zip) {
 function fetchWeather(lat, long, cityState) {
 	const requestOptions = { method: "GET", redirect: "follow" };
 
-	fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&current=apparent_temperature&temperature_unit=fahrenheit`, requestOptions)
-		//fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&daily=sunrise,sunset,daylight_duration&current=apparent_temperature,precipitation,rain,showers,weather_code,cloud_cover,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m,relative_humidity_2m,temperature_2m,snowfall,is_day&timezone=America%2FChicago&forecast_days=1&wind_speed_unit=mph&temperature_unit=fahrenheit&precipitation_unit=inch`, requestOptions)
+	fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&daily=sunrise,sunset,daylight_duration&current=apparent_temperature,precipitation,rain,showers,weather_code,cloud_cover,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m,relative_humidity_2m,temperature_2m,snowfall,is_day&timezone=America%2FChicago&forecast_days=1&wind_speed_unit=mph&temperature_unit=fahrenheit&precipitation_unit=inch`, requestOptions)
 		.then((response) => response.json())
 		.then(function (result) {
-			//fname = "fetchWeather";
-
-			console.log("fetchWeather cityState: " + cityState);
 
 			consoleDisplay("fetchWeather", result, false);
-
 			updateWeatherCard(result, cityState);
 		})
 		.catch((error) => {
 			console.log("displaying fetchWeather error");
 			if (error) {
-				// errorNote = error;
 				errorBuild(error);
-				// caughtError(errorNote);
-				console.error(error);
 				return;
 			}
 			console.error(error);
@@ -101,8 +93,6 @@ function fetchWeather(lat, long, cityState) {
 function sendToModelTest(cityState) {
 	console.log(`sendToTest: cityState -> ${cityState}`)
 
-	fname = "sendToModelTest";
-	consoleDisplay(fname, cityState, true);
 
 
 	userPrompt = `Can you write a short paragraph about ${cityState}?`
@@ -110,9 +100,8 @@ function sendToModelTest(cityState) {
 	$("aiBlock").classList.remove("d-none");
 	$("aiResponse").innerHTML = `<pre>${cityState}</pre>`;
 
-	console.log("send to model TEST called");
-	console.log(`City, ST: ${cityState}`);
-	console.log(`userPrompt: ${userPrompt}`);
+	consoleDisplay("sendToModelTest", cityState, true);
+	consoleDisplay("userPrompt", userPrompt, true);
 }
 
 

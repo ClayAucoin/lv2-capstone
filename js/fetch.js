@@ -64,8 +64,7 @@ function fetchByZip(zip) {
 function fetchWeather(lat, long, cityState) {
 	const requestOptions = { method: "GET", redirect: "follow" };
 
-	fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&current=apparent_temperature&temperature_unit=fahrenheit`, requestOptions)
-		//fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&daily=sunrise,sunset,daylight_duration&current=apparent_temperature,precipitation,rain,showers,weather_code,cloud_cover,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m,relative_humidity_2m,temperature_2m,snowfall,is_day&timezone=America%2FChicago&forecast_days=1&wind_speed_unit=mph&temperature_unit=fahrenheit&precipitation_unit=inch`, requestOptions)
+	fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&daily=sunrise,sunset,daylight_duration&current=apparent_temperature,precipitation,rain,showers,weather_code,cloud_cover,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m,relative_humidity_2m,temperature_2m,snowfall,is_day&timezone=America%2FChicago&forecast_days=1&wind_speed_unit=mph&temperature_unit=fahrenheit&precipitation_unit=inch`, requestOptions)
 		.then((response) => response.json())
 		.then(function (result) {
 			//fname = "fetchWeather";
@@ -163,44 +162,3 @@ function sendToModel(cityState) {
 		$("aiResponse").textContent = botReply;
 	});
 }
-
-
-
-// OPTIONAL ADD
-/**
- * Get location information by city name.
- * @param {string} userInput - Value of user input.
- * 
- * @returns
- * void
- */
-function fetchByCity(userInput) {
-	const requestOptions = { method: "GET", redirect: "follow" };
-
-	fetch(`https://geocoding-api.open-meteo.com/v1/search?countryCode=US&name=${userInput}`, requestOptions)
-		.then((response) => response.json())
-		.then(function (result) {
-
-			consoleDisplay("fetchByCity", result, true);
-
-			const first = result.results[0];
-			const lat = first.latitude;
-			const long = first.longitude;
-			const cityState = `${first.name} , ${first.admin1}`;
-
-			console.log(`lat: ${lat} long: ${long}`);
-
-			fetchWeather(lat, long, cityState);
-			run_Production(cityState);
-		})
-		.catch((error) => {
-			console.log("displaying fetchByCity error");
-			if (error) {
-				errorBuild(error);
-				return;
-			}
-			console.error(error);
-		});
-}
-
-
