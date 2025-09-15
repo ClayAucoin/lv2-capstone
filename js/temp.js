@@ -7,3 +7,11 @@ fetch("https://api.open-meteo.com/v1/forecast?latitude=29.9547&longitude=-90.075
     .then((response) => response.text())
     .then((result) => console.log(result))
     .catch((error) => console.error(error));
+
+
+
+function getPotion() {
+    const potions = [
+        { name: "Potion1 Name", desc: "This potion does this" },
+        { name: "Potion2 Name", desc: "This potion does this" },
+    ]

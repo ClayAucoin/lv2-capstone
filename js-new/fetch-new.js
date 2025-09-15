@@ -3,7 +3,7 @@
 // console.log("fetch.js says hi");
 
 // set to true to attach ai response
-const runLive = true;
+const runLive = false;
 
 function run_Production(cityState) {
 	let value = cityState;

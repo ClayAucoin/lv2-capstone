@@ -2,83 +2,83 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
-    <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css">
 
-    <title>Level 2 Capstone</title>
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+<title>Level 2 Capstone</title>
+<link rel="icon" href="images/favicon.ico" type="image/x-icon">
 </head>
 
 <body>
 
-    <main class="myContainer container d-flex justify-content-center my-4">
-        <article class="card bg-primary text-light p-2 w-100" style="max-width: 28rem;">
+<main class="myContainer container d-flex justify-content-center my-4">
+    <article class="card bg-primary text-light p-2 w-100" style="max-width: 28rem;">
 
-            <header class="text-center mt-2">
-                <h1 class="h4 text-nowrap">Type in a U.S. ZIP code</h1>
-            </header>
+        <header class="text-center mt-2">
+            <h1 class="h4 text-nowrap">Type in a U.S. ZIP code</h1>
+        </header>
 
-            <div class="card-body">
-                <!-- Search form -->
-                <label for="userInput" class="form-label visually-hidden">ZIP code</label>
-                <input id="userInput" name="zip" type="text" class="form-control" inputmode="numeric" pattern="[0-9]{5}"
-                    maxlength="5" autocomplete="postal-code" aria-describedby="zipHelp" placeholder="Enter 5-digit ZIP"
-                    required>
-                <div id="zipHelp" class="form-text text-white-50">
-                    Enter a 5-digit U.S. ZIP (e.g., 70001).
-                </div>
-
-                <button id="sendButton" class="btn bg-white text-primary mt-2 w-100" type="submit">
-                    Search ZIP Code
-                </button>
-
-                <!-- Weather summary -->
-                <section id="dataDisplay" aria-live="polite" class="mt-3">
-                    <h2 class="h5 card-title text-light"><output data-bind="cityST"></output></h2>
-                    <p class="card-text mb-0">Right now it's <output id="temp"></output> and will have <output id="sunlight"></output> of daylight today.</p>
-                </section>
-
-                <!-- AI info block -->
-                <section id="aiBlock" class="border bg-white rounded mt-4 text-body">
-                    <header class="border-bottom p-2 small text-muted">
-                        A little information about <output data-bind="cityST"></output> from ChatGPT.
-                    </header>
-                    <div id="aiResponse" class="px-3 pt-3 pb-2 mb-2 overflow-auto" style="max-height: 14rem;">
-                        Result will go here…
-                    </div>
-                </section>
+        <div class="card-body">
+            <!-- Search form -->
+            <label for="userInput" class="form-label visually-hidden">ZIP code</label>
+            <input id="userInput" name="zip" type="text" class="form-control" inputmode="numeric" pattern="[0-9]{5}"
+                maxlength="5" autocomplete="postal-code" aria-describedby="zipHelp" placeholder="Enter 5-digit ZIP"
+                required>
+            <div id="zipHelp" class="form-text text-white-50">
+                Enter a 5-digit U.S. ZIP (e.g., 70001).
             </div>
-        </article>
 
-        <!-- Modal (native <dialog>, styled like Bootstrap) -->
-        <dialog id="htmlModal" class="bs-modal" aria-labelledby="htmlDialogLabel" aria-describedby="htmlDialogBody">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <header class="modal-header">
-                        <h2 class="modal-title fs-5" id="htmlDialogLabel">Title</h2>
-                        <!-- If you want a close button, wire it to dialog.close() -->
-                        <!-- <button type="button" class="btn-close" aria-label="Close"></button> -->
-                    </header>
-                    <div class="modal-body" id="htmlDialogBody">Your content goes here.</div>
-                    <footer class="modal-footer">
-                        <button id="closeHTMLModalBtn" type="button" class="btn btn-primary" data-ok>OK</button>
-                    </footer>
+            <button id="sendButton" class="btn bg-white text-primary mt-2 w-100" type="submit">
+                Search ZIP Code
+            </button>
+
+            <!-- Weather summary -->
+            <section id="dataDisplay" aria-live="polite" class="mt-3">
+                <h2 class="h5 card-title text-light"><output data-bind="cityST"></output></h2>
+                <p class="card-text mb-0">Right now it's <output id="temp"></output> and will have <output id="sunlight"></output> of daylight today.</p>
+            </section>
+
+            <!-- AI info block -->
+            <section id="aiBlock" class="border bg-white rounded mt-4 text-body">
+                <header class="border-bottom p-2 small text-muted">
+                    A little information about <output data-bind="cityST"></output> from ChatGPT.
+                </header>
+                <div id="aiResponse" class="px-3 pt-3 pb-2 mb-2 overflow-auto" style="max-height: 14rem;">
+                    Result will go here…
                 </div>
-            </div>
-        </dialog>
-    </main>
+            </section>
+        </div>
+    </article>
 
-    <script src="js/secret-variables.js"></script>
-    <script src="js-new/variables-new.js"></script>
-    <script src="js-new/console-display-new.js"></script>
-    <script src="js-new/modal-html-new.js"></script>
-    <script src="js-new/app-new.js"></script>
-    <script src="js-new/fetch-new.js"></script>
+    <!-- Modal (native <dialog>, styled like Bootstrap) -->
+    <dialog id="htmlModal" class="bs-modal" aria-labelledby="htmlDialogLabel" aria-describedby="htmlDialogBody">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <header class="modal-header">
+                    <h2 class="modal-title fs-5" id="htmlDialogLabel">Title</h2>
+                    <!-- If you want a close button, wire it to dialog.close() -->
+                    <!-- <button type="button" class="btn-close" aria-label="Close"></button> -->
+                </header>
+                <div class="modal-body" id="htmlDialogBody">Your content goes here.</div>
+                <footer class="modal-footer">
+                    <button id="closeHTMLModalBtn" type="button" class="btn btn-primary" data-ok>OK</button>
+                </footer>
+            </div>
+        </div>
+    </dialog>
+</main>
+
+<script src="js/secret-variables.js"></script>
+<script src="js-new/variables-new.js"></script>
+<script src="js-new/console-display-new.js"></script>
+<script src="js-new/modal-html-new.js"></script>
+<script src="js-new/app-new.js"></script>
+<script src="js-new/fetch-new.js"></script>
 
 </body>
 
