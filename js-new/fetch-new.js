@@ -28,10 +28,15 @@ function fetchByZip(zip) {
 	const requestOptions = { method: "GET", redirect: "follow" };
 
 	fetch(`https://geocoding-api.open-meteo.com/v1/search?countryCode=US&name=${zip}`, requestOptions)
-		.then((response) => response.json())
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+			return response.json();
+		})
 		.then(function (result) {
 
-			consoleDisplay("fetchByZip", result, true);
+			consoleDisplay("fetchByZip", result, false);
 
 			const first = result.results[0];
 			const lat = first.latitude;
